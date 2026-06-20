@@ -25,15 +25,19 @@ public abstract class ServiceBase
 
     protected Guid ResolverEmpresaId(Guid? empresaIdInformado)
     {
-        return empresaIdInformado.GetValueOrDefault() != Guid.Empty
-            ? empresaIdInformado.Value
+        var empresaId = empresaIdInformado.GetValueOrDefault();
+
+        return empresaId != Guid.Empty
+            ? empresaId
             : _userContext.EmpresaId;
     }
 
     protected Guid ResolverBureauId(Guid? bureauIdInformado)
     {
-        return bureauIdInformado.GetValueOrDefault() != Guid.Empty
-            ? bureauIdInformado.Value
+        var bureauId = bureauIdInformado.GetValueOrDefault();
+
+        return bureauId != Guid.Empty
+            ? bureauId
             : _userContext.BureauId;
     }
 }
