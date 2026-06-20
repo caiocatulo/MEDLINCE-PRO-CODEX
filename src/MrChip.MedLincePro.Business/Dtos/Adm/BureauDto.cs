@@ -12,7 +12,7 @@ public sealed class BureauDto
     public string TelefoneFixo { get; set; } = string.Empty;
     public string TelefoneCel { get; set; } = string.Empty;
     public string Cep { get; set; } = string.Empty;
-    public string EnderecoComplemento { get; set; } = string.Empty;
+    public string? EnderecoComplemento { get; set; }
     public string EnderecoNumero { get; set; } = string.Empty;
     public DateTime DataCadastro { get; set; }
     public bool Ativo { get; set; }
@@ -21,8 +21,8 @@ public sealed class BureauDto
     public int ApiAcessos { get; set; }
     public string ApiCulture { get; set; } = string.Empty;
     public string ApiCountry { get; set; } = string.Empty;
-    public bool AcessoApi { get; set; }
     public string Adm { get; set; } = string.Empty;
+    public bool AcessoApi { get; set; }
     public int PrazoInclusaoGuia { get; set; }
     public EnderecoDto? Endereco { get; set; }
 }

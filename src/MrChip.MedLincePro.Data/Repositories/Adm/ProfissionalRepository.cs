@@ -31,8 +31,8 @@ public sealed class ProfissionalRepository : IProfissionalRepository
                 P.AcessoPlantao, P.ComissaoGlosas, P.NumeroPis, P.CodigoGrauDeParticipacao,
                 P.BancoCodigo, P.BancoAgencia, P.BancoConta,
                 E.Cep AS EnderecoCep, E.Cep, E.Logradouro, E.Bairro, E.Cidade, E.Uf, E.DataCadastro
-            FROM Profissional P
-            LEFT JOIN Endereco E ON E.Cep = P.Cep
+            FROM dbo.Profissional P
+            LEFT JOIN dbo.Endereco E ON E.Cep = P.Cep
             WHERE P.EmpresaId = @EmpresaId
             ORDER BY P.Nome;";
 
@@ -59,8 +59,8 @@ public sealed class ProfissionalRepository : IProfissionalRepository
                 P.AcessoPlantao, P.ComissaoGlosas, P.NumeroPis, P.CodigoGrauDeParticipacao,
                 P.BancoCodigo, P.BancoAgencia, P.BancoConta,
                 E.Cep AS EnderecoCep, E.Cep, E.Logradouro, E.Bairro, E.Cidade, E.Uf, E.DataCadastro
-            FROM Profissional P
-            LEFT JOIN Endereco E ON E.Cep = P.Cep
+            FROM dbo.Profissional P
+            LEFT JOIN dbo.Endereco E ON E.Cep = P.Cep
             WHERE P.ProfissionalId = @ProfissionalId
               AND P.EmpresaId = @EmpresaId;";
 
@@ -82,13 +82,13 @@ public sealed class ProfissionalRepository : IProfissionalRepository
         {
             const string sqlExisteCpf = @"
                 SELECT TOP 1 1
-                FROM Profissional
+                FROM dbo.Profissional
                 WHERE EmpresaId = @EmpresaId
                   AND Cpf = @Cpf;";
 
             const string sqlExisteRegistro = @"
                 SELECT TOP 1 1
-                FROM Profissional
+                FROM dbo.Profissional
                 WHERE EmpresaId = @EmpresaId
                   AND Registro = @Registro;";
 
@@ -107,7 +107,7 @@ public sealed class ProfissionalRepository : IProfissionalRepository
             }
 
             const string sqlInserirProfissional = @"
-                INSERT INTO Profissional
+                INSERT INTO dbo.Profissional
                 (
                     ProfissionalId, EmpresaId, Nome, Registro, TipoDeDocumento, Cpf,
                     DataCadastro, Ativo, ConselhoProfissionalCodigo, UnidadeFederacaoCodigo,
@@ -127,7 +127,7 @@ public sealed class ProfissionalRepository : IProfissionalRepository
             var rows = await conn.ExecuteAsync(new CommandDefinition(sqlInserirProfissional, profissional, transaction: tx, cancellationToken: ct));
 
             const string sqlInserirVinculo = @"
-                INSERT INTO BureauProfissional
+                INSERT INTO dbo.BureauProfissional
                 (
                     BureauId, ProfissionalId, Matricula, Agregado, ColetarGuia, Ativo, DataCadastro
                 )
@@ -142,7 +142,7 @@ public sealed class ProfissionalRepository : IProfissionalRepository
                 {
                     BureauId = bureauId,
                     profissional.ProfissionalId,
-                    Matricula = profissional.Cpf,
+                    Matricula = string.IsNullOrWhiteSpace(profissional.Cpf) ? profissional.Registro : profissional.Cpf,
                     Agregado = true,
                     ColetarGuia = 1,
                     Ativo = true,
@@ -171,7 +171,7 @@ public sealed class ProfissionalRepository : IProfissionalRepository
         {
             // UPDATE preserva campos editáveis do legado.
             const string sqlUpdate = @"
-                UPDATE Profissional
+                UPDATE dbo.Profissional
                    SET Nome = @Nome,
                        Registro = @Registro,
                        Cpf = @Cpf,
@@ -204,7 +204,7 @@ public sealed class ProfissionalRepository : IProfissionalRepository
 
             const string sqlExisteVinculo = @"
                 SELECT TOP 1 1
-                FROM BureauProfissional
+                FROM dbo.BureauProfissional
                 WHERE BureauId = @BureauId
                   AND ProfissionalId = @ProfissionalId;";
 
@@ -217,7 +217,7 @@ public sealed class ProfissionalRepository : IProfissionalRepository
             if (!existe.HasValue)
             {
                 const string sqlInserirVinculo = @"
-                    INSERT INTO BureauProfissional
+                    INSERT INTO dbo.BureauProfissional
                     (BureauId, ProfissionalId, Matricula, Agregado, ColetarGuia, Ativo, DataCadastro)
                     VALUES
                     (@BureauId, @ProfissionalId, @Matricula, @Agregado, @ColetarGuia, @Ativo, @DataCadastro);";
@@ -228,7 +228,7 @@ public sealed class ProfissionalRepository : IProfissionalRepository
                     {
                         BureauId = bureauId,
                         profissional.ProfissionalId,
-                        Matricula = profissional.Cpf,
+                        Matricula = string.IsNullOrWhiteSpace(profissional.Cpf) ? profissional.Registro : profissional.Cpf,
                         Agregado = true,
                         ColetarGuia = 1,
                         Ativo = true,

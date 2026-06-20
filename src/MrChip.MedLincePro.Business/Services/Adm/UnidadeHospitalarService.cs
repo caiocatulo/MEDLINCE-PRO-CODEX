@@ -92,7 +92,12 @@ public sealed class UnidadeHospitalarService : ServiceBase, IUnidadeHospitalarSe
         dto.Cnpj = Normalization.OnlyDigits(dto.Cnpj);
         dto.Nome = Normalization.TrimOrEmpty(dto.Nome);
         dto.NomeReduzido = Normalization.TrimOrEmpty(dto.NomeReduzido);
-        dto.ContatoEmail = Normalization.LowerTrimOrEmpty(dto.ContatoEmail);
+        dto.ContatoEmail = Normalization.NullIfWhiteSpace(Normalization.LowerTrimOrEmpty(dto.ContatoEmail));
+        dto.ContatoNome = Normalization.NullIfWhiteSpace(dto.ContatoNome);
+        dto.Token = Normalization.NullIfWhiteSpace(dto.Token);
+        dto.Latitude = Normalization.NullIfWhiteSpace(dto.Latitude);
+        dto.Longitude = Normalization.NullIfWhiteSpace(dto.Longitude);
+        dto.Description = Normalization.NullIfWhiteSpace(dto.Description);
         dto.Uf = Normalization.TrimOrEmpty(dto.Uf).ToUpperInvariant();
     }
 }

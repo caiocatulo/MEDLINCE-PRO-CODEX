@@ -29,8 +29,8 @@ public sealed class BureauRepository : IBureauRepository
                 C.EnderecoNumero, C.DataCadastro, C.Ativo, C.AcessoApi, C.ApiAcesso,
                 C.ApiIp, C.ApiAcessos, C.ApiCulture, C.ApiCountry, C.Adm, C.PrazoInclusaoGuia,
                 P.Cep AS EnderecoCep, P.Cep, P.Logradouro, P.Bairro, P.Cidade, P.Uf, P.DataCadastro
-            FROM Bureau C
-            INNER JOIN Endereco P ON C.Cep = P.Cep
+            FROM dbo.Bureau C
+            INNER JOIN dbo.Endereco P ON C.Cep = P.Cep
             WHERE C.EmpresaId = @EmpresaId
             ORDER BY C.Nome;";
 
@@ -55,8 +55,8 @@ public sealed class BureauRepository : IBureauRepository
                 C.EnderecoNumero, C.DataCadastro, C.Ativo, C.AcessoApi, C.ApiAcesso,
                 C.ApiIp, C.ApiAcessos, C.ApiCulture, C.ApiCountry, C.Adm, C.PrazoInclusaoGuia,
                 P.Cep AS EnderecoCep, P.Cep, P.Logradouro, P.Bairro, P.Cidade, P.Uf, P.DataCadastro
-            FROM Bureau C
-            LEFT JOIN Endereco P ON C.Cep = P.Cep
+            FROM dbo.Bureau C
+            LEFT JOIN dbo.Endereco P ON C.Cep = P.Cep
             WHERE C.BureauId = @BureauId;";
 
         var result = await conn.QueryAsync<Bureau, Endereco, Bureau>(
@@ -73,7 +73,7 @@ public sealed class BureauRepository : IBureauRepository
         await using var conn = await _connectionFactory.OpenConnectionAsync(MedLinceDatabase.Adm, ct);
 
         const string sql = @"
-        INSERT INTO Bureau
+        INSERT INTO dbo.Bureau
         (
             BureauId, EmpresaId, Nome, NomeResumido, CpfCnpj, Contato, Email,
             TelefoneFixo, TelefoneCel, Cep, EnderecoComplemento, EnderecoNumero,
@@ -98,7 +98,7 @@ public sealed class BureauRepository : IBureauRepository
 
         // UPDATE preserva campos editáveis do legado.
         const string sql = @"
-        UPDATE Bureau
+        UPDATE dbo.Bureau
            SET Nome = @Nome,
                NomeResumido = @NomeResumido,
                CpfCnpj = @CpfCnpj,

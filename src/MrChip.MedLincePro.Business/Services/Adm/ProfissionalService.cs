@@ -99,9 +99,14 @@ public sealed class ProfissionalService : ServiceBase, IProfissionalService
     {
         dto.Nome = Normalization.TrimOrEmpty(dto.Nome);
         dto.Registro = Normalization.TrimOrEmpty(dto.Registro);
-        dto.Cpf = Normalization.OnlyDigits(dto.Cpf);
-        dto.Email = Normalization.LowerTrimOrEmpty(dto.Email);
-        dto.Telefone = Normalization.OnlyDigits(dto.Telefone);
+        dto.Cpf = Normalization.NullIfWhiteSpace(Normalization.OnlyDigits(dto.Cpf));
+        dto.Email = Normalization.NullIfWhiteSpace(Normalization.LowerTrimOrEmpty(dto.Email));
+        dto.Telefone = Normalization.NullIfWhiteSpace(Normalization.OnlyDigits(dto.Telefone));
         dto.Cep = Normalization.OnlyDigits(dto.Cep);
+        dto.EnderecoComplemento = Normalization.NullIfWhiteSpace(dto.EnderecoComplemento);
+        dto.CodigoGrauDeParticipacao = Normalization.NullIfWhiteSpace(dto.CodigoGrauDeParticipacao);
+        dto.BancoCodigo = Normalization.NullIfWhiteSpace(dto.BancoCodigo);
+        dto.BancoAgencia = Normalization.NullIfWhiteSpace(dto.BancoAgencia);
+        dto.BancoConta = Normalization.NullIfWhiteSpace(dto.BancoConta);
     }
 }

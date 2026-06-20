@@ -1,5 +1,4 @@
 using Dapper;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using MrChip.MedLincePro.Business.Dtos.Adm;
 using MrChip.MedLincePro.Business.Interfaces.Adm;

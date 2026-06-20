@@ -19,7 +19,7 @@ public sealed class Usuario : Entity
     public bool ReadOnly { get; set; }
     public int Grupo { get; set; }
     public string Email { get; set; } = string.Empty;
-    public int CodigoRecuperaSenha { get; set; }
+    public int? CodigoRecuperaSenha { get; set; }
     public List<UsuarioClaim> UsuarioClaims { get; set; }
 }
 

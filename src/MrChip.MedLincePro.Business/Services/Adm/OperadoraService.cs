@@ -48,6 +48,8 @@ public sealed class OperadoraService : ServiceBase, IOperadoraService
         var empresa = ResolverEmpresaId(empresaId);
         if (empresa == Guid.Empty) return ResultadoOperacao<OperadoraDto>.Falha("Empresa inválida.");
         if (string.IsNullOrWhiteSpace(dto.RazaoSocial)) return ResultadoOperacao<OperadoraDto>.Falha("Informe a razão social da operadora.");
+        if (dto.OperadoraModalidadeId == Guid.Empty) return ResultadoOperacao<OperadoraDto>.Falha("Informe a modalidade da operadora.");
+        if (string.IsNullOrWhiteSpace(dto.RegistroAns)) return ResultadoOperacao<OperadoraDto>.Falha("Informe o registro ANS da operadora.");
         dto.OperadoraId = dto.OperadoraId == Guid.Empty ? Guid.NewGuid() : dto.OperadoraId;
         dto.Ativo = true;
         dto.DataCadastro = dto.DataCadastro == default ? DateTime.UtcNow : dto.DataCadastro;
@@ -55,7 +57,22 @@ public sealed class OperadoraService : ServiceBase, IOperadoraService
         dto.EmpresaOperadora.EmpresaId = empresa;
         dto.EmpresaOperadora.OperadoraId = dto.OperadoraId;
         dto.EmpresaOperadora.EmpresaOperadoraId = dto.EmpresaOperadora.EmpresaOperadoraId == Guid.Empty ? Guid.NewGuid() : dto.EmpresaOperadora.EmpresaOperadoraId;
+        dto.EmpresaOperadora.NomeFantasia = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.NomeFantasia) ? dto.NomeFantasia : Normalization.TrimOrEmpty(dto.EmpresaOperadora.NomeFantasia);
+        dto.EmpresaOperadora.CodigoNaOperadora = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.CodigoNaOperadora) ? dto.RegistroAns : Normalization.TrimOrEmpty(dto.EmpresaOperadora.CodigoNaOperadora);
+        dto.EmpresaOperadora.TipoIdentificacaoNaOperadora = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.TipoIdentificacaoNaOperadora) ? "1" : Normalization.TrimOrEmpty(dto.EmpresaOperadora.TipoIdentificacaoNaOperadora);
+        dto.EmpresaOperadora.FormaCalculoProcedimento = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.FormaCalculoProcedimento) ? "1" : Normalization.TrimOrEmpty(dto.EmpresaOperadora.FormaCalculoProcedimento);
+        dto.EmpresaOperadora.CodigoAuxiliar = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.CodigoAuxiliar);
+        dto.EmpresaOperadora.NumeroGuia = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.NumeroGuia);
+        dto.EmpresaOperadora.WsLogin = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.WsLogin);
+        dto.EmpresaOperadora.WsSenha = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.WsSenha);
+        dto.EmpresaOperadora.VersaoXmlEnvio = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.VersaoXmlEnvio);
+        dto.EmpresaOperadora.CompetenciaAtiva = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.CompetenciaAtiva);
+        dto.EmpresaOperadora.WsMrChipUrl = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.WsMrChipUrl);
+        dto.EmpresaOperadora.RegimeAtendimentoPadrao = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.RegimeAtendimentoPadrao);
+        dto.EmpresaOperadora.TagNumeroGuiaPrestador = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.TagNumeroGuiaPrestador);
+        dto.EmpresaOperadora.ModeloGuiaAuxiliar ??= 1;
         dto.EmpresaOperadora.Ativo = true;
+        dto.EmpresaOperadora.DataCadastro = dto.EmpresaOperadora.DataCadastro == default ? DateTime.UtcNow : dto.EmpresaOperadora.DataCadastro;
 
         var ok = await _repository.AdicionarAsync(empresa, dto.ToEntity(), ct);
         return ok ? ResultadoOperacao<OperadoraDto>.Ok(dto, "Operadora criada/vinculada com sucesso.") : ResultadoOperacao<OperadoraDto>.Falha("Falha ao criar operadora.");
@@ -69,10 +86,26 @@ public sealed class OperadoraService : ServiceBase, IOperadoraService
         Normalizar(dto);
         var empresa = ResolverEmpresaId(empresaId);
         if (empresa == Guid.Empty) return ResultadoOperacao.Falha("Empresa inválida.");
+        if (dto.OperadoraModalidadeId == Guid.Empty) return ResultadoOperacao.Falha("Informe a modalidade da operadora.");
+        if (string.IsNullOrWhiteSpace(dto.RegistroAns)) return ResultadoOperacao.Falha("Informe o registro ANS da operadora.");
         dto.OperadoraId = operadoraId;
         dto.EmpresaOperadora ??= new EmpresaOperadoraDto();
         dto.EmpresaOperadora.EmpresaId = empresa;
         dto.EmpresaOperadora.OperadoraId = operadoraId;
+        dto.EmpresaOperadora.NomeFantasia = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.NomeFantasia) ? dto.NomeFantasia : Normalization.TrimOrEmpty(dto.EmpresaOperadora.NomeFantasia);
+        dto.EmpresaOperadora.CodigoNaOperadora = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.CodigoNaOperadora) ? dto.RegistroAns : Normalization.TrimOrEmpty(dto.EmpresaOperadora.CodigoNaOperadora);
+        dto.EmpresaOperadora.TipoIdentificacaoNaOperadora = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.TipoIdentificacaoNaOperadora) ? "1" : Normalization.TrimOrEmpty(dto.EmpresaOperadora.TipoIdentificacaoNaOperadora);
+        dto.EmpresaOperadora.FormaCalculoProcedimento = string.IsNullOrWhiteSpace(dto.EmpresaOperadora.FormaCalculoProcedimento) ? "1" : Normalization.TrimOrEmpty(dto.EmpresaOperadora.FormaCalculoProcedimento);
+        dto.EmpresaOperadora.CodigoAuxiliar = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.CodigoAuxiliar);
+        dto.EmpresaOperadora.NumeroGuia = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.NumeroGuia);
+        dto.EmpresaOperadora.WsLogin = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.WsLogin);
+        dto.EmpresaOperadora.WsSenha = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.WsSenha);
+        dto.EmpresaOperadora.VersaoXmlEnvio = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.VersaoXmlEnvio);
+        dto.EmpresaOperadora.CompetenciaAtiva = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.CompetenciaAtiva);
+        dto.EmpresaOperadora.WsMrChipUrl = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.WsMrChipUrl);
+        dto.EmpresaOperadora.RegimeAtendimentoPadrao = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.RegimeAtendimentoPadrao);
+        dto.EmpresaOperadora.TagNumeroGuiaPrestador = Normalization.NullIfWhiteSpace(dto.EmpresaOperadora.TagNumeroGuiaPrestador);
+        dto.EmpresaOperadora.ModeloGuiaAuxiliar ??= 1;
 
         var ok = await _repository.AtualizarAsync(empresa, dto.ToEntity(), ct);
         return ok ? ResultadoOperacao.Ok("Operadora atualizada com sucesso.") : ResultadoOperacao.Falha("Operadora não encontrada para a empresa.");
@@ -96,6 +129,10 @@ public sealed class OperadoraService : ServiceBase, IOperadoraService
         dto.NomeFantasia = Normalization.TrimOrEmpty(dto.NomeFantasia);
         dto.Cnpj = Normalization.OnlyDigits(dto.Cnpj);
         dto.RegistroAns = Normalization.TrimOrEmpty(dto.RegistroAns);
-        dto.ContatoEmail = Normalization.LowerTrimOrEmpty(dto.ContatoEmail);
+        dto.ContatoEmail = Normalization.NullIfWhiteSpace(Normalization.LowerTrimOrEmpty(dto.ContatoEmail));
+        dto.WsEndpoint = Normalization.NullIfWhiteSpace(dto.WsEndpoint);
+        dto.CarteiraMask = Normalization.NullIfWhiteSpace(dto.CarteiraMask);
+        dto.Token = Normalization.NullIfWhiteSpace(dto.Token);
+        dto.ContatoNome = Normalization.NullIfWhiteSpace(dto.ContatoNome);
     }
 }

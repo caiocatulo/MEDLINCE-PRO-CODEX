@@ -12,8 +12,7 @@ public static class AdmMappingExtensions
         Bairro = entity.Bairro,
         Cidade = entity.Cidade,
         Uf = entity.Uf,
-        DataCadastro = entity.DataCadastro,
-        Ativo = entity.Ativo
+        DataCadastro = entity.DataCadastro
     };
 
     public static BureauDto ToDto(this Bureau entity) => new()
@@ -37,8 +36,8 @@ public static class AdmMappingExtensions
         ApiAcessos = entity.ApiAcessos,
         ApiCulture = entity.ApiCulture,
         ApiCountry = entity.ApiCountry,
-        AcessoApi = entity.AcessoApi,
         Adm = entity.Adm,
+        AcessoApi = entity.AcessoApi,
         PrazoInclusaoGuia = entity.PrazoInclusaoGuia,
         Endereco = entity.Endereco?.ToDto()
     };
@@ -69,7 +68,15 @@ public static class AdmMappingExtensions
         UrlApi = entity.UrlApi,
         IntegraPlantao = entity.IntegraPlantao,
         AppPlantao = entity.AppPlantao,
+        NumeroGuiaPrestador = entity.NumeroGuiaPrestador,
         TrabalhaLoteGrupos = entity.TrabalhaLoteGrupos,
+        PercentualPIS = entity.PercentualPIS,
+        PercentualCOFINS = entity.PercentualCOFINS,
+        PercentualCSLL = entity.PercentualCSLL,
+        PercentualIR = entity.PercentualIR,
+        PercentualINSS = entity.PercentualINSS,
+        PercentualISS = entity.PercentualISS,
+        TaxaAdm = entity.TaxaAdm,
         PathArquivos = entity.PathArquivos,
         DataCadastro = entity.DataCadastro,
         Ativo = entity.Ativo,
@@ -108,7 +115,6 @@ public static class AdmMappingExtensions
         EmpresaId = entity.EmpresaId,
         Nome = entity.Nome,
         Registro = entity.Registro,
-        TipoDeDocumento = entity.TipoDeDocumento,
         Cpf = entity.Cpf,
         DataCadastro = entity.DataCadastro,
         Ativo = entity.Ativo,
@@ -128,6 +134,7 @@ public static class AdmMappingExtensions
         BancoCodigo = entity.BancoCodigo,
         BancoAgencia = entity.BancoAgencia,
         BancoConta = entity.BancoConta,
+        TipoDeDocumento = entity.TipoDeDocumento,
         Endereco = entity.Endereco?.ToDto()
     };
 
@@ -144,7 +151,7 @@ public static class AdmMappingExtensions
         NomeReduzido = entity.NomeReduzido,
         Cidade = entity.Cidade,
         Uf = entity.Uf,
-        Token = entity.Token,
+        Token = null,
         ContatoEmail = entity.ContatoEmail,
         ContatoNome = entity.ContatoNome,
         DataCadastro = entity.DataCadastro,
@@ -165,7 +172,7 @@ public static class AdmMappingExtensions
         WsRetornaBeneficiario = entity.WsRetornaBeneficiario,
         CarteiraMask = entity.CarteiraMask,
         ElegibilidadeTipo = entity.ElegibilidadeTipo,
-        Token = entity.Token,
+        Token = null,
         ContatoEmail = entity.ContatoEmail,
         ContatoNome = entity.ContatoNome,
         SenhaNumCharSadt = entity.SenhaNumCharSadt,
@@ -184,9 +191,9 @@ public static class AdmMappingExtensions
         CodigoAuxiliar = entity.CodigoAuxiliar,
         CodigoNaOperadora = entity.CodigoNaOperadora,
         NumeroGuia = entity.NumeroGuia,
-        Nomefantasia = entity.Nomefantasia,
+        NomeFantasia = entity.NomeFantasia,
         WsLogin = entity.WsLogin,
-        WsSenha = entity.WsSenha,
+        WsSenha = null,
         WsSequencia = entity.WsSequencia,
         WsHabilitado = entity.WsHabilitado,
         TrabalhaPlantao = entity.TrabalhaPlantao,
@@ -213,10 +220,8 @@ public static class AdmMappingExtensions
         CobrancaSADTSolicitante = entity.CobrancaSADTSolicitante,
         CobrancaSADTExecutante = entity.CobrancaSADTExecutante,
         CobrancaHonorarioOrigem = entity.CobrancaHonorarioOrigem,
-        CobrancaHonorarioExecutante = entity.CobrancaHonorarioExecutante,
         CobrancaHonorarioContratado = entity.CobrancaHonorarioContratado,
-        DiaMesFechamento = entity.DiaMesFechamento,
-        MaxMesesReenvio = entity.MaxMesesReenvio,
+        CobrancaHonorarioExecutante = entity.CobrancaHonorarioExecutante,
         NumeroGuiaPrincipalObrigatorio = entity.NumeroGuiaPrincipalObrigatorio,
         CopiarGuia = entity.CopiarGuia,
         CarteiraObrigatoria = entity.CarteiraObrigatoria,
@@ -230,6 +235,11 @@ public static class AdmMappingExtensions
         Checkin = entity.Checkin,
         Checkout = entity.Checkout,
         TrabalhaTecnica = entity.TrabalhaTecnica,
+        TagNumeroGuiaPrestador = entity.TagNumeroGuiaPrestador,
+        HorarioObrigatorioXml = entity.HorarioObrigatorioXml,
+        FormaCalculoProcedimento = entity.FormaCalculoProcedimento,
+        ModeloGuiaAuxiliar = entity.ModeloGuiaAuxiliar,
+        ConcatenarGrupoProcedimento = entity.ConcatenarGrupoProcedimento,
         DataCadastro = entity.DataCadastro,
         Ativo = entity.Ativo
     };

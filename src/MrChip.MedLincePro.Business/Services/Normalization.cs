@@ -6,6 +6,12 @@ internal static class Normalization
 
     public static string LowerTrimOrEmpty(string? value) => TrimOrEmpty(value).ToLowerInvariant();
 
+    public static string? NullIfWhiteSpace(string? value)
+    {
+        var normalized = TrimOrEmpty(value);
+        return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
+    }
+
     public static string OnlyDigits(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))

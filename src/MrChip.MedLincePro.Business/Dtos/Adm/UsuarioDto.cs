@@ -11,7 +11,7 @@ public sealed class UsuarioDto
     public bool ReadOnly { get; set; }
     public int Grupo { get; set; }
     public string Email { get; set; } = string.Empty;
-    public int CodigoRecuperaSenha { get; set; }
+    public int? CodigoRecuperaSenha { get; set; }
     public DateTime DataCadastro { get; set; }
     public bool Ativo { get; set; }
     public List<UsuarioClaimDto> UsuarioClaims { get; set; } = new();
@@ -38,7 +38,7 @@ public sealed class UsuarioUpdateDto
     public string? NovaSenha { get; set; }
     public int Grupo { get; set; }
     public string Email { get; set; } = string.Empty;
-    public int CodigoRecuperaSenha { get; set; }
+    public int? CodigoRecuperaSenha { get; set; }
     public bool Ativo { get; set; }
 }
 

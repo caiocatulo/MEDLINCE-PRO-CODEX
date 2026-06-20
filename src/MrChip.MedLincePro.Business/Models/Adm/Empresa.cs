@@ -22,20 +22,28 @@ public sealed class Empresa : Entity
     public string ContatoTelefoneDdd { get; set; } = string.Empty;
     public string ContatoTelefoneNumero { get; set; } = string.Empty;
     public string Cep { get; set; } = string.Empty;
-    public string EnderecoComplemento { get; set; } = string.Empty;
+    public string? EnderecoComplemento { get; set; }
     public string EnderecoNumero { get; set; } = string.Empty;
-    public string Cnes { get; set; } = string.Empty;
+    public string? Cnes { get; set; }
     public int EmpresaTipo { get; set; }
-    public string LogoEmpresaMaior { get; set; } = string.Empty;
-    public string LogoEmpresaMenor { get; set; } = string.Empty;
+    public string? LogoEmpresaMaior { get; set; }
+    public string? LogoEmpresaMenor { get; set; }
     public string LogoSistemaMenor { get; set; } = string.Empty;
     public string LogoSistemaMaior { get; set; } = string.Empty;
-    public string LayoutPagina { get; set; } = string.Empty;
-    public string UrlApi { get; set; } = string.Empty;
-    public bool IntegraPlantao { get; set; }
-    public string AppPlantao { get; set; } = string.Empty;
-    public bool TrabalhaLoteGrupos { get; set; }
-    public string PathArquivos { get; set; } = string.Empty;
+    public string? LayoutPagina { get; set; }
+    public string? UrlApi { get; set; }
+    public bool? IntegraPlantao { get; set; }
+    public string? AppPlantao { get; set; }
+    public string? NumeroGuiaPrestador { get; set; }
+    public bool? TrabalhaLoteGrupos { get; set; }
+    public decimal? PercentualPIS { get; set; }
+    public decimal? PercentualCOFINS { get; set; }
+    public decimal? PercentualCSLL { get; set; }
+    public decimal? PercentualIR { get; set; }
+    public decimal? PercentualINSS { get; set; }
+    public decimal? PercentualISS { get; set; }
+    public decimal? TaxaAdm { get; set; }
+    public string? PathArquivos { get; set; }
     public Endereco Endereco { get; set; }
     public List<Bureau> Bureaux { get; set; }
 }

@@ -97,6 +97,7 @@ public sealed class BureauService : ServiceBase, IBureauService
         dto.CpfCnpj = Normalization.OnlyDigits(dto.CpfCnpj);
         dto.Email = Normalization.LowerTrimOrEmpty(dto.Email);
         dto.Cep = Normalization.OnlyDigits(dto.Cep);
+        dto.EnderecoComplemento = Normalization.NullIfWhiteSpace(dto.EnderecoComplemento);
         dto.Adm = string.IsNullOrWhiteSpace(dto.Adm) ? "N" : dto.Adm.Trim().ToUpperInvariant();
     }
 }

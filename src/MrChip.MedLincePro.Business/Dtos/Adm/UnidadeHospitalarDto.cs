@@ -7,15 +7,15 @@ public sealed class UnidadeHospitalarDto
     public string Nome { get; set; } = string.Empty;
     public string UfCodigo { get; set; } = string.Empty;
     public string UfSigla { get; set; } = string.Empty;
-    public string Latitude { get; set; } = string.Empty;
-    public string Longitude { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string? Latitude { get; set; }
+    public string? Longitude { get; set; }
+    public string? Description { get; set; }
     public string NomeReduzido { get; set; } = string.Empty;
     public string Cidade { get; set; } = string.Empty;
     public string Uf { get; set; } = string.Empty;
-    public string Token { get; set; } = string.Empty;
-    public string ContatoEmail { get; set; } = string.Empty;
-    public string ContatoNome { get; set; } = string.Empty;
+    public string? Token { get; set; }
+    public string? ContatoEmail { get; set; }
+    public string? ContatoNome { get; set; }
     public DateTime DataCadastro { get; set; }
     public bool Ativo { get; set; }
 }

@@ -21,7 +21,6 @@ public sealed class OperadoraRepository : IOperadoraRepository
     {
         await using var conn = await _connectionFactory.OpenConnectionAsync(MedLinceDatabase.Adm, ct);
 
-        // Projeção preservada da consulta legada de Operadora com vínculo EmpresaOperadora.
         const string sql = @"
             SELECT
                 o.OperadoraId, o.OperadoraModalidadeId, o.RegistroAns, o.RazaoSocial,
@@ -30,7 +29,7 @@ public sealed class OperadoraRepository : IOperadoraRepository
                 o.ContatoEmail, o.ContatoNome, o.SenhaNumCharSadt, o.SenhaCharHonorario,
                 o.SenhaCharConsulta, o.DataCadastro, o.Ativo,
                 eo.EmpresaOperadoraId, eo.EmpresaId, eo.OperadoraId, eo.CodigoAuxiliar,
-                eo.CodigoNaOperadora, eo.NumeroGuia, eo.Nomefantasia, eo.WsLogin,
+                eo.CodigoNaOperadora, eo.NumeroGuia, eo.NomeFantasia, eo.WsLogin,
                 eo.WsSenha, eo.WsSequencia, eo.WsHabilitado, eo.TrabalhaPlantao,
                 eo.FaturamentoTiss, eo.NumeroGuiaObrigatorio, eo.NumeroGuiaEmpresaObrigatorio,
                 eo.LiberadoParaAgendaMedica, eo.AtendimentoUrgencia, eo.AcrescimoCriancaIdoso,
@@ -39,12 +38,14 @@ public sealed class OperadoraRepository : IOperadoraRepository
                 eo.TipoIdentificacaoNaOperadora, eo.FaturamentoLiberadoBureau, eo.CompetenciaAtiva,
                 eo.MaxGuiasLote, eo.AutorizadoConsulta, eo.AutorizadoTeleConsulta,
                 eo.ConsultaGuiaTipoId, eo.CobrancaSADTOrigem, eo.CobrancaSADTSolicitante,
-                eo.CobrancaSADTExecutante, eo.CobrancaHonorarioOrigem, eo.CobrancaHonorarioExecutante,
-                eo.CobrancaHonorarioContratado, eo.DiaMesFechamento, eo.MaxMesesReenvio,
-                eo.NumeroGuiaPrincipalObrigatorio, eo.CopiarGuia, eo.CarteiraObrigatoria,
-                eo.ContratoParticular, eo.ConvenioPublico, eo.WsMrChipUrl, eo.WsMrChipElegibilidade,
-                eo.CaraterDoAtendimentoPadrao, eo.TipoAtendimentoPadrao, eo.RegimeAtendimentoPadrao,
-                eo.Checkin, eo.Checkout, eo.TrabalhaTecnica, eo.DataCadastro, eo.Ativo
+                eo.CobrancaSADTExecutante, eo.CobrancaHonorarioOrigem, eo.CobrancaHonorarioContratado,
+                eo.CobrancaHonorarioExecutante, eo.NumeroGuiaPrincipalObrigatorio, eo.CopiarGuia,
+                eo.carteiraObrigatoria AS CarteiraObrigatoria, eo.ContratoParticular, eo.ConvenioPublico,
+                eo.WsMrChipUrl, eo.WsMrChipElegibilidade, eo.CaraterDoAtendimentoPadrao,
+                eo.TipoAtendimentoPadrao, eo.RegimeAtendimentoPadrao, eo.Checkin, eo.Checkout,
+                eo.TrabalhaTecnica, eo.TagNumeroGuiaPrestador, eo.HorarioObrigatorioXml,
+                eo.FormaCalculoProcedimento, eo.ModeloGuiaAuxiliar, eo.ConcatenarGrupoProcedimento,
+                eo.DataCadastro, eo.Ativo
             FROM dbo.Operadora o
             INNER JOIN dbo.EmpresaOperadora eo ON eo.OperadoraId = o.OperadoraId
             WHERE eo.EmpresaId = @EmpresaId
@@ -79,7 +80,7 @@ public sealed class OperadoraRepository : IOperadoraRepository
                 o.ContatoEmail, o.ContatoNome, o.SenhaNumCharSadt, o.SenhaCharHonorario,
                 o.SenhaCharConsulta, o.DataCadastro, o.Ativo,
                 eo.EmpresaOperadoraId, eo.EmpresaId, eo.OperadoraId, eo.CodigoAuxiliar,
-                eo.CodigoNaOperadora, eo.NumeroGuia, eo.Nomefantasia, eo.WsLogin,
+                eo.CodigoNaOperadora, eo.NumeroGuia, eo.NomeFantasia, eo.WsLogin,
                 eo.WsSenha, eo.WsSequencia, eo.WsHabilitado, eo.TrabalhaPlantao,
                 eo.FaturamentoTiss, eo.NumeroGuiaObrigatorio, eo.NumeroGuiaEmpresaObrigatorio,
                 eo.LiberadoParaAgendaMedica, eo.AtendimentoUrgencia, eo.AcrescimoCriancaIdoso,
@@ -88,12 +89,14 @@ public sealed class OperadoraRepository : IOperadoraRepository
                 eo.TipoIdentificacaoNaOperadora, eo.FaturamentoLiberadoBureau, eo.CompetenciaAtiva,
                 eo.MaxGuiasLote, eo.AutorizadoConsulta, eo.AutorizadoTeleConsulta,
                 eo.ConsultaGuiaTipoId, eo.CobrancaSADTOrigem, eo.CobrancaSADTSolicitante,
-                eo.CobrancaSADTExecutante, eo.CobrancaHonorarioOrigem, eo.CobrancaHonorarioExecutante,
-                eo.CobrancaHonorarioContratado, eo.DiaMesFechamento, eo.MaxMesesReenvio,
-                eo.NumeroGuiaPrincipalObrigatorio, eo.CopiarGuia, eo.CarteiraObrigatoria,
-                eo.ContratoParticular, eo.ConvenioPublico, eo.WsMrChipUrl, eo.WsMrChipElegibilidade,
-                eo.CaraterDoAtendimentoPadrao, eo.TipoAtendimentoPadrao, eo.RegimeAtendimentoPadrao,
-                eo.Checkin, eo.Checkout, eo.TrabalhaTecnica, eo.DataCadastro, eo.Ativo
+                eo.CobrancaSADTExecutante, eo.CobrancaHonorarioOrigem, eo.CobrancaHonorarioContratado,
+                eo.CobrancaHonorarioExecutante, eo.NumeroGuiaPrincipalObrigatorio, eo.CopiarGuia,
+                eo.carteiraObrigatoria AS CarteiraObrigatoria, eo.ContratoParticular, eo.ConvenioPublico,
+                eo.WsMrChipUrl, eo.WsMrChipElegibilidade, eo.CaraterDoAtendimentoPadrao,
+                eo.TipoAtendimentoPadrao, eo.RegimeAtendimentoPadrao, eo.Checkin, eo.Checkout,
+                eo.TrabalhaTecnica, eo.TagNumeroGuiaPrestador, eo.HorarioObrigatorioXml,
+                eo.FormaCalculoProcedimento, eo.ModeloGuiaAuxiliar, eo.ConcatenarGrupoProcedimento,
+                eo.DataCadastro, eo.Ativo
             FROM dbo.Operadora o
             INNER JOIN dbo.EmpresaOperadora eo ON eo.OperadoraId = o.OperadoraId
             WHERE eo.EmpresaId = @EmpresaId
@@ -168,7 +171,7 @@ public sealed class OperadoraRepository : IOperadoraRepository
                 INSERT INTO dbo.EmpresaOperadora
                 (
                     EmpresaOperadoraId, EmpresaId, OperadoraId, CodigoAuxiliar, CodigoNaOperadora,
-                    NumeroGuia, Nomefantasia, WsLogin, WsSenha, WsSequencia, WsHabilitado,
+                    NumeroGuia, NomeFantasia, WsLogin, WsSenha, WsSequencia, WsHabilitado,
                     TrabalhaPlantao, FaturamentoTiss, NumeroGuiaObrigatorio,
                     NumeroGuiaEmpresaObrigatorio, LiberadoParaAgendaMedica, AtendimentoUrgencia,
                     AcrescimoCriancaIdoso, AtendimentoHorarioEspecial, AtendimentoApartamento,
@@ -176,17 +179,18 @@ public sealed class OperadoraRepository : IOperadoraRepository
                     VersaoXmlEnvio, TipoIdentificacaoNaOperadora, FaturamentoLiberadoBureau,
                     CompetenciaAtiva, MaxGuiasLote, AutorizadoConsulta, AutorizadoTeleConsulta,
                     ConsultaGuiaTipoId, CobrancaSADTOrigem, CobrancaSADTSolicitante,
-                    CobrancaSADTExecutante, CobrancaHonorarioOrigem, CobrancaHonorarioExecutante,
-                    CobrancaHonorarioContratado, DiaMesFechamento, MaxMesesReenvio,
-                    NumeroGuiaPrincipalObrigatorio, CopiarGuia, CarteiraObrigatoria,
-                    ContratoParticular, ConvenioPublico, WsMrChipUrl, WsMrChipElegibilidade,
-                    CaraterDoAtendimentoPadrao, TipoAtendimentoPadrao, RegimeAtendimentoPadrao,
-                    Checkin, Checkout, TrabalhaTecnica, DataCadastro, Ativo
+                    CobrancaSADTExecutante, CobrancaHonorarioOrigem, CobrancaHonorarioContratado,
+                    CobrancaHonorarioExecutante, NumeroGuiaPrincipalObrigatorio, CopiarGuia,
+                    carteiraObrigatoria, ContratoParticular, ConvenioPublico, WsMrChipUrl,
+                    WsMrChipElegibilidade, CaraterDoAtendimentoPadrao, TipoAtendimentoPadrao,
+                    RegimeAtendimentoPadrao, Checkin, Checkout, TrabalhaTecnica,
+                    TagNumeroGuiaPrestador, HorarioObrigatorioXml, FormaCalculoProcedimento,
+                    ModeloGuiaAuxiliar, ConcatenarGrupoProcedimento, DataCadastro, Ativo
                 )
                 VALUES
                 (
                     @EmpresaOperadoraId, @EmpresaId, @OperadoraId, @CodigoAuxiliar, @CodigoNaOperadora,
-                    @NumeroGuia, @Nomefantasia, @WsLogin, @WsSenha, @WsSequencia, @WsHabilitado,
+                    @NumeroGuia, @NomeFantasia, @WsLogin, @WsSenha, @WsSequencia, @WsHabilitado,
                     @TrabalhaPlantao, @FaturamentoTiss, @NumeroGuiaObrigatorio,
                     @NumeroGuiaEmpresaObrigatorio, @LiberadoParaAgendaMedica, @AtendimentoUrgencia,
                     @AcrescimoCriancaIdoso, @AtendimentoHorarioEspecial, @AtendimentoApartamento,
@@ -194,17 +198,19 @@ public sealed class OperadoraRepository : IOperadoraRepository
                     @VersaoXmlEnvio, @TipoIdentificacaoNaOperadora, @FaturamentoLiberadoBureau,
                     @CompetenciaAtiva, @MaxGuiasLote, @AutorizadoConsulta, @AutorizadoTeleConsulta,
                     @ConsultaGuiaTipoId, @CobrancaSADTOrigem, @CobrancaSADTSolicitante,
-                    @CobrancaSADTExecutante, @CobrancaHonorarioOrigem, @CobrancaHonorarioExecutante,
-                    @CobrancaHonorarioContratado, @DiaMesFechamento, @MaxMesesReenvio,
-                    @NumeroGuiaPrincipalObrigatorio, @CopiarGuia, @CarteiraObrigatoria,
-                    @ContratoParticular, @ConvenioPublico, @WsMrChipUrl, @WsMrChipElegibilidade,
-                    @CaraterDoAtendimentoPadrao, @TipoAtendimentoPadrao, @RegimeAtendimentoPadrao,
-                    @Checkin, @Checkout, @TrabalhaTecnica, @DataCadastro, @Ativo
+                    @CobrancaSADTExecutante, @CobrancaHonorarioOrigem, @CobrancaHonorarioContratado,
+                    @CobrancaHonorarioExecutante, @NumeroGuiaPrincipalObrigatorio, @CopiarGuia,
+                    @CarteiraObrigatoria, @ContratoParticular, @ConvenioPublico, @WsMrChipUrl,
+                    @WsMrChipElegibilidade, @CaraterDoAtendimentoPadrao, @TipoAtendimentoPadrao,
+                    @RegimeAtendimentoPadrao, @Checkin, @Checkout, @TrabalhaTecnica,
+                    @TagNumeroGuiaPrestador, @HorarioObrigatorioXml, @FormaCalculoProcedimento,
+                    @ModeloGuiaAuxiliar, @ConcatenarGrupoProcedimento, @DataCadastro, @Ativo
                 );";
 
             var vinculo = operadora.EmpresaOperadora;
             vinculo.EmpresaId = empresaId;
             vinculo.OperadoraId = operadora.OperadoraId;
+
             var rows = await conn.ExecuteAsync(new CommandDefinition(sqlEmpresaOperadora, vinculo, transaction: tx, cancellationToken: ct));
 
             await tx.CommitAsync(ct);
@@ -238,7 +244,7 @@ public sealed class OperadoraRepository : IOperadoraRepository
                        WsRetornaBeneficiario = @WsRetornaBeneficiario,
                        CarteiraMask = @CarteiraMask,
                        ElegibilidadeTipo = @ElegibilidadeTipo,
-                       Token = @Token,
+                       Token = COALESCE(@Token, Token),
                        ContatoEmail = @ContatoEmail,
                        ContatoNome = @ContatoNome,
                        SenhaNumCharSadt = @SenhaNumCharSadt,
@@ -254,9 +260,9 @@ public sealed class OperadoraRepository : IOperadoraRepository
                    SET CodigoAuxiliar = @CodigoAuxiliar,
                        CodigoNaOperadora = @CodigoNaOperadora,
                        NumeroGuia = @NumeroGuia,
-                       Nomefantasia = @Nomefantasia,
+                       NomeFantasia = @NomeFantasia,
                        WsLogin = @WsLogin,
-                       WsSenha = @WsSenha,
+                       WsSenha = COALESCE(@WsSenha, WsSenha),
                        WsSequencia = @WsSequencia,
                        WsHabilitado = @WsHabilitado,
                        TrabalhaPlantao = @TrabalhaPlantao,
@@ -283,13 +289,11 @@ public sealed class OperadoraRepository : IOperadoraRepository
                        CobrancaSADTSolicitante = @CobrancaSADTSolicitante,
                        CobrancaSADTExecutante = @CobrancaSADTExecutante,
                        CobrancaHonorarioOrigem = @CobrancaHonorarioOrigem,
-                       CobrancaHonorarioExecutante = @CobrancaHonorarioExecutante,
                        CobrancaHonorarioContratado = @CobrancaHonorarioContratado,
-                       DiaMesFechamento = @DiaMesFechamento,
-                       MaxMesesReenvio = @MaxMesesReenvio,
+                       CobrancaHonorarioExecutante = @CobrancaHonorarioExecutante,
                        NumeroGuiaPrincipalObrigatorio = @NumeroGuiaPrincipalObrigatorio,
                        CopiarGuia = @CopiarGuia,
-                       CarteiraObrigatoria = @CarteiraObrigatoria,
+                       carteiraObrigatoria = @CarteiraObrigatoria,
                        ContratoParticular = @ContratoParticular,
                        ConvenioPublico = @ConvenioPublico,
                        WsMrChipUrl = @WsMrChipUrl,
@@ -300,6 +304,11 @@ public sealed class OperadoraRepository : IOperadoraRepository
                        Checkin = @Checkin,
                        Checkout = @Checkout,
                        TrabalhaTecnica = @TrabalhaTecnica,
+                       TagNumeroGuiaPrestador = @TagNumeroGuiaPrestador,
+                       HorarioObrigatorioXml = @HorarioObrigatorioXml,
+                       FormaCalculoProcedimento = @FormaCalculoProcedimento,
+                       ModeloGuiaAuxiliar = @ModeloGuiaAuxiliar,
+                       ConcatenarGrupoProcedimento = @ConcatenarGrupoProcedimento,
                        Ativo = @Ativo
                  WHERE EmpresaId = @EmpresaId
                    AND OperadoraId = @OperadoraId;";

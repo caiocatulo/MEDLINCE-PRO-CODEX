@@ -93,6 +93,15 @@ public sealed class EmpresaService : ServiceBase, IEmpresaService
         dto.Cep = Normalization.OnlyDigits(dto.Cep);
         dto.TelefoneDdd = Normalization.OnlyDigits(dto.TelefoneDdd);
         dto.TelefoneNumero = Normalization.OnlyDigits(dto.TelefoneNumero);
+        dto.EnderecoComplemento = Normalization.NullIfWhiteSpace(dto.EnderecoComplemento);
+        dto.Cnes = Normalization.NullIfWhiteSpace(dto.Cnes);
+        dto.LogoEmpresaMaior = Normalization.NullIfWhiteSpace(dto.LogoEmpresaMaior);
+        dto.LogoEmpresaMenor = Normalization.NullIfWhiteSpace(dto.LogoEmpresaMenor);
+        dto.LayoutPagina = Normalization.NullIfWhiteSpace(dto.LayoutPagina);
+        dto.UrlApi = Normalization.NullIfWhiteSpace(dto.UrlApi);
+        dto.AppPlantao = Normalization.NullIfWhiteSpace(dto.AppPlantao);
+        dto.NumeroGuiaPrestador = Normalization.NullIfWhiteSpace(dto.NumeroGuiaPrestador);
+        dto.PathArquivos = Normalization.NullIfWhiteSpace(dto.PathArquivos);
         if (dto.EmpresaTipo == 0) dto.EmpresaTipo = 2;
     }
 }

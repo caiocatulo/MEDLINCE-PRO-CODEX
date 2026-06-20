@@ -31,7 +31,15 @@ public static class DtoToEntityExtensions
         UrlApi = dto.UrlApi,
         IntegraPlantao = dto.IntegraPlantao,
         AppPlantao = dto.AppPlantao,
+        NumeroGuiaPrestador = dto.NumeroGuiaPrestador,
         TrabalhaLoteGrupos = dto.TrabalhaLoteGrupos,
+        PercentualPIS = dto.PercentualPIS,
+        PercentualCOFINS = dto.PercentualCOFINS,
+        PercentualCSLL = dto.PercentualCSLL,
+        PercentualIR = dto.PercentualIR,
+        PercentualINSS = dto.PercentualINSS,
+        PercentualISS = dto.PercentualISS,
+        TaxaAdm = dto.TaxaAdm,
         PathArquivos = dto.PathArquivos,
         DataCadastro = dto.DataCadastro == default ? DateTime.UtcNow : dto.DataCadastro,
         Ativo = dto.Ativo
@@ -58,8 +66,8 @@ public static class DtoToEntityExtensions
         ApiAcessos = dto.ApiAcessos,
         ApiCulture = dto.ApiCulture,
         ApiCountry = dto.ApiCountry,
-        AcessoApi = dto.AcessoApi,
         Adm = dto.Adm,
+        AcessoApi = dto.AcessoApi,
         PrazoInclusaoGuia = dto.PrazoInclusaoGuia
     };
 
@@ -69,7 +77,6 @@ public static class DtoToEntityExtensions
         EmpresaId = dto.EmpresaId,
         Nome = dto.Nome,
         Registro = dto.Registro,
-        TipoDeDocumento = dto.TipoDeDocumento,
         Cpf = dto.Cpf,
         DataCadastro = dto.DataCadastro == default ? DateTime.UtcNow : dto.DataCadastro,
         Ativo = dto.Ativo,
@@ -88,7 +95,8 @@ public static class DtoToEntityExtensions
         CodigoGrauDeParticipacao = dto.CodigoGrauDeParticipacao,
         BancoCodigo = dto.BancoCodigo,
         BancoAgencia = dto.BancoAgencia,
-        BancoConta = dto.BancoConta
+        BancoConta = dto.BancoConta,
+        TipoDeDocumento = dto.TipoDeDocumento
     };
 
     public static UnidadeHospitalar ToEntity(this UnidadeHospitalarDto dto) => new()
@@ -144,7 +152,7 @@ public static class DtoToEntityExtensions
         CodigoAuxiliar = dto.CodigoAuxiliar,
         CodigoNaOperadora = dto.CodigoNaOperadora,
         NumeroGuia = dto.NumeroGuia,
-        Nomefantasia = dto.Nomefantasia,
+        NomeFantasia = dto.NomeFantasia,
         WsLogin = dto.WsLogin,
         WsSenha = dto.WsSenha,
         WsSequencia = dto.WsSequencia,
@@ -173,10 +181,8 @@ public static class DtoToEntityExtensions
         CobrancaSADTSolicitante = dto.CobrancaSADTSolicitante,
         CobrancaSADTExecutante = dto.CobrancaSADTExecutante,
         CobrancaHonorarioOrigem = dto.CobrancaHonorarioOrigem,
-        CobrancaHonorarioExecutante = dto.CobrancaHonorarioExecutante,
         CobrancaHonorarioContratado = dto.CobrancaHonorarioContratado,
-        DiaMesFechamento = dto.DiaMesFechamento,
-        MaxMesesReenvio = dto.MaxMesesReenvio,
+        CobrancaHonorarioExecutante = dto.CobrancaHonorarioExecutante,
         NumeroGuiaPrincipalObrigatorio = dto.NumeroGuiaPrincipalObrigatorio,
         CopiarGuia = dto.CopiarGuia,
         CarteiraObrigatoria = dto.CarteiraObrigatoria,
@@ -190,6 +196,11 @@ public static class DtoToEntityExtensions
         Checkin = dto.Checkin,
         Checkout = dto.Checkout,
         TrabalhaTecnica = dto.TrabalhaTecnica,
+        TagNumeroGuiaPrestador = dto.TagNumeroGuiaPrestador,
+        HorarioObrigatorioXml = dto.HorarioObrigatorioXml,
+        FormaCalculoProcedimento = dto.FormaCalculoProcedimento,
+        ModeloGuiaAuxiliar = dto.ModeloGuiaAuxiliar,
+        ConcatenarGrupoProcedimento = dto.ConcatenarGrupoProcedimento,
         DataCadastro = dto.DataCadastro == default ? DateTime.UtcNow : dto.DataCadastro,
         Ativo = dto.Ativo
     };

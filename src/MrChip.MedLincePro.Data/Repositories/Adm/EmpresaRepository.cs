@@ -21,7 +21,6 @@ public sealed class EmpresaRepository : IEmpresaRepository
     {
         await using var conn = await _connectionFactory.OpenConnectionAsync(MedLinceDatabase.Adm, ct);
 
-        // Projeção preservada da consulta legada de Empresa.
         const string sql = @"
         SELECT
             e.EmpresaId, e.RazaoSocial, e.NomeFantasia, e.Cnpj, e.Email,
@@ -30,13 +29,15 @@ public sealed class EmpresaRepository : IEmpresaRepository
             e.EnderecoComplemento, e.EnderecoNumero, e.Cnes, e.EmpresaTipo,
             e.LogoEmpresaMaior, e.LogoEmpresaMenor, e.LogoSistemaMenor, e.LogoSistemaMaior,
             e.LayoutPagina, e.UrlApi, e.DataCadastro, e.Ativo, e.IntegraPlantao, e.AppPlantao,
-            e.TrabalhaLoteGrupos,
+            e.NumeroGuiaPrestador, e.TrabalhaLoteGrupos,
+            e.PercentualPIS, e.PercentualCOFINS, e.PercentualCSLL, e.PercentualIR,
+            e.PercentualINSS, e.PercentualISS, e.TaxaAdm, e.PathArquivos,
             endEmp.Cep AS EnderecoCep, endEmp.Cep, endEmp.Logradouro, endEmp.Bairro,
             endEmp.Cidade, endEmp.Uf, endEmp.DataCadastro,
             b.BureauId, b.EmpresaId, b.Nome, b.NomeResumido, b.CpfCnpj, b.Contato, b.Email,
             b.TelefoneFixo, b.TelefoneCel, b.Cep, b.EnderecoComplemento,
             b.EnderecoNumero, b.ApiAcesso, b.ApiIp, b.ApiAcessos, b.ApiCulture,
-            b.ApiCountry, b.AcessoApi, b.Adm, b.PrazoInclusaoGuia
+            b.ApiCountry, b.Adm, b.AcessoApi, b.PrazoInclusaoGuia, b.Ativo, b.DataCadastro
         FROM dbo.Empresa e
         INNER JOIN dbo.Endereco AS endEmp ON endEmp.Cep = e.Cep
         LEFT JOIN dbo.Bureau AS b ON b.EmpresaId = e.EmpresaId
@@ -56,7 +57,6 @@ public sealed class EmpresaRepository : IEmpresaRepository
     {
         await using var conn = await _connectionFactory.OpenConnectionAsync(MedLinceDatabase.Adm, ct);
 
-        // Projeção preservada da consulta legada de Empresa por ID.
         const string sql = @"
         SELECT
             e.EmpresaId, e.RazaoSocial, e.NomeFantasia, e.Cnpj, e.Email,
@@ -65,12 +65,15 @@ public sealed class EmpresaRepository : IEmpresaRepository
             e.EnderecoComplemento, e.EnderecoNumero, e.Cnes, e.EmpresaTipo,
             e.LogoEmpresaMaior, e.LogoEmpresaMenor, e.LogoSistemaMenor, e.LogoSistemaMaior,
             e.LayoutPagina, e.UrlApi, e.DataCadastro, e.Ativo, e.IntegraPlantao, e.AppPlantao,
-            e.TrabalhaLoteGrupos,
+            e.NumeroGuiaPrestador, e.TrabalhaLoteGrupos,
+            e.PercentualPIS, e.PercentualCOFINS, e.PercentualCSLL, e.PercentualIR,
+            e.PercentualINSS, e.PercentualISS, e.TaxaAdm, e.PathArquivos,
             endEmp.Cep AS EnderecoSplit,
             endEmp.Cep AS Cep, endEmp.Logradouro, endEmp.Bairro, endEmp.Cidade, endEmp.Uf, endEmp.DataCadastro,
             b.BureauId, b.EmpresaId, b.Nome, b.NomeResumido, b.CpfCnpj, b.Contato, b.Email,
             b.TelefoneFixo, b.TelefoneCel, b.Cep, b.EnderecoComplemento, b.EnderecoNumero,
-            b.ApiAcesso, b.ApiIp, b.ApiAcessos, b.ApiCulture, b.ApiCountry, b.AcessoApi, b.Adm, b.PrazoInclusaoGuia
+            b.ApiAcesso, b.ApiIp, b.ApiAcessos, b.ApiCulture, b.ApiCountry, b.Adm, b.AcessoApi,
+            b.PrazoInclusaoGuia, b.Ativo, b.DataCadastro
         FROM dbo.Empresa e
         INNER JOIN dbo.Endereco AS endEmp ON endEmp.Cep = e.Cep
         LEFT JOIN dbo.Bureau AS b ON b.EmpresaId = e.EmpresaId
@@ -99,7 +102,9 @@ public sealed class EmpresaRepository : IEmpresaRepository
             ContatoNome, ContatoEmail, ContatoTelefoneDdd, ContatoTelefoneNumero, Cep,
             EnderecoComplemento, EnderecoNumero, Cnes, EmpresaTipo, LogoEmpresaMaior,
             LogoEmpresaMenor, LogoSistemaMenor, LogoSistemaMaior, LayoutPagina, UrlApi,
-            IntegraPlantao, AppPlantao, TrabalhaLoteGrupos, PathArquivos, DataCadastro, Ativo
+            IntegraPlantao, AppPlantao, NumeroGuiaPrestador, TrabalhaLoteGrupos,
+            PercentualPIS, PercentualCOFINS, PercentualCSLL, PercentualIR, PercentualINSS,
+            PercentualISS, TaxaAdm, PathArquivos, DataCadastro, Ativo
         )
         VALUES
         (
@@ -107,7 +112,9 @@ public sealed class EmpresaRepository : IEmpresaRepository
             @ContatoNome, @ContatoEmail, @ContatoTelefoneDdd, @ContatoTelefoneNumero, @Cep,
             @EnderecoComplemento, @EnderecoNumero, @Cnes, @EmpresaTipo, @LogoEmpresaMaior,
             @LogoEmpresaMenor, @LogoSistemaMenor, @LogoSistemaMaior, @LayoutPagina, @UrlApi,
-            @IntegraPlantao, @AppPlantao, @TrabalhaLoteGrupos, @PathArquivos, @DataCadastro, @Ativo
+            @IntegraPlantao, @AppPlantao, @NumeroGuiaPrestador, @TrabalhaLoteGrupos,
+            @PercentualPIS, @PercentualCOFINS, @PercentualCSLL, @PercentualIR, @PercentualINSS,
+            @PercentualISS, @TaxaAdm, @PathArquivos, @DataCadastro, @Ativo
         );";
 
         var rows = await conn.ExecuteAsync(new CommandDefinition(sql, empresa, cancellationToken: ct));
@@ -118,7 +125,6 @@ public sealed class EmpresaRepository : IEmpresaRepository
     {
         await using var conn = await _connectionFactory.OpenConnectionAsync(MedLinceDatabase.Adm, ct);
 
-        // UPDATE preserva o escopo de campos editáveis do legado.
         const string sql = @"
         UPDATE dbo.Empresa
            SET RazaoSocial             = @RazaoSocial,
@@ -136,8 +142,25 @@ public sealed class EmpresaRepository : IEmpresaRepository
                EnderecoNumero          = @EnderecoNumero,
                Cnes                    = @Cnes,
                EmpresaTipo             = @EmpresaTipo,
+               LogoEmpresaMaior        = @LogoEmpresaMaior,
+               LogoEmpresaMenor        = @LogoEmpresaMenor,
+               LogoSistemaMenor        = @LogoSistemaMenor,
+               LogoSistemaMaior        = @LogoSistemaMaior,
+               LayoutPagina            = @LayoutPagina,
+               UrlApi                  = @UrlApi,
                AppPlantao              = @AppPlantao,
-               IntegraPlantao          = @IntegraPlantao
+               IntegraPlantao          = @IntegraPlantao,
+               NumeroGuiaPrestador     = @NumeroGuiaPrestador,
+               TrabalhaLoteGrupos      = @TrabalhaLoteGrupos,
+               PercentualPIS           = @PercentualPIS,
+               PercentualCOFINS        = @PercentualCOFINS,
+               PercentualCSLL          = @PercentualCSLL,
+               PercentualIR            = @PercentualIR,
+               PercentualINSS          = @PercentualINSS,
+               PercentualISS           = @PercentualISS,
+               TaxaAdm                 = @TaxaAdm,
+               PathArquivos            = @PathArquivos,
+               Ativo                   = @Ativo
          WHERE EmpresaId               = @EmpresaId;";
 
         var rows = await conn.ExecuteAsync(new CommandDefinition(sql, empresa, cancellationToken: ct));
